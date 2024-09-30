@@ -2,7 +2,7 @@ import React, { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Logout.css";
 import SideMenu from "../SideMenu/SideMenu";
-import BuildingMap from "../../BuildingMap";
+import BuildingMap from "../Map/BuildingMap";
 import SearchBar from "../SearchBar/SearchBar";
 //import { FaRegListAlt } from "react-icons/fa";
 //import { IoEyeSharp, IoMailSharp } from "react-icons/io5";

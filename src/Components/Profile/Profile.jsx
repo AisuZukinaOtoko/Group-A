@@ -8,7 +8,7 @@ import { sendPasswordResetEmail } from "firebase/auth";
 import auth from "../../utils/firebase";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import BuildingMap from "../../BuildingMap";
+import BuildingMap from "../Map/BuildingMap";
 
 const Profile = () => {
   const [buses, setBuses] = useState([]);

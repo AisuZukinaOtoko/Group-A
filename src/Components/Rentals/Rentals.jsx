@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import "./Rentals.css";
 import SideMenu from "../SideMenu/SideMenu";
 import SearchBar from "../SearchBar/SearchBar";
-import BuildingMap from "../../BuildingMap";
+import BuildingMap from "../Map/BuildingMap";
 
 const Rentals = () => {
   const [showPopup, setShowPopup] = useState(false);
