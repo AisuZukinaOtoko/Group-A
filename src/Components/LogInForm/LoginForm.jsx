@@ -70,8 +70,8 @@ const LoginForm = () => {
   };
 
   return (
-    <div className="wrapper">
-      <div className="wrapper_alpha">
+    <div className="wrapper_login">
+      <div className="wrapper_alpha_login">
         {!showForgotPassword ? (
           <form onSubmit={onLogin}>
             <h1>Welcome to On-Site</h1>

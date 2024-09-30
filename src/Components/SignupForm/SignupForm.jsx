@@ -78,8 +78,8 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="wrapper">
-      <div className="wrapper_alpha">
+    <div className="wrapper_signup">
+      <div className="wrapper_alpha_signup">
         <form className="SignupForm" onSubmit={handleSubmit}>
           <h1>Welcome to On-Site</h1>
           <div className="register-link">
