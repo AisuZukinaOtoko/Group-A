@@ -1,11 +1,12 @@
 import React from "react";
-import { FiMapPin } from "react-icons/fi"; // For FiMapPin
-import { GrBus } from "react-icons/gr"; // For GrBus
-import { CiRoute, CiLogout } from "react-icons/ci"; // For CiRoute and CiLogout
-import { FaUser } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import "./SideMenu.css"; // Import your CSS file
 import logo from "../Assets/black_logo.jpg";
+import { MdLocationPin } from "react-icons/md";
+import { MdDirectionsBus } from "react-icons/md";
+import { TbRoute } from "react-icons/tb";
+import { MdAccountCircle } from "react-icons/md";
+import { MdLogout } from "react-icons/md";
 
 const SideMenu = () => {
   const navigate = useNavigate();
@@ -35,18 +36,10 @@ const SideMenu = () => {
       <img src={logo} alt="logo" className="logo" />
       <div className="menu-divider"></div> {/* Divider Line */}
       <div className="menu-item">
-        <a onClick={handleProfile}>
-          <span>
-            <FaUser className="icon" />
-          </span>
-          <span className="menu-text">Profile</span>
-        </a>
-      </div>
-      <div className="menu-item">
         <a onClick={handleHOME}>
           <span>
             {" "}
-            <FiMapPin className="icon" />
+            <MdLocationPin className="icon" />
           </span>
           <span className="menu-text">Home</span>
         </a>
@@ -54,7 +47,7 @@ const SideMenu = () => {
       <div className="menu-item">
         <a onClick={handleBUS}>
           <span>
-            <GrBus className="icon" />
+            <MdDirectionsBus className="icon" />
           </span>
           <span className="menu-text">Bus Schedule</span>
         </a>
@@ -62,15 +55,23 @@ const SideMenu = () => {
       <div className="menu-item">
         <a onClick={handleRentals}>
           <span>
-            <CiRoute className="icon" />
+            <TbRoute className="icon" />
           </span>
           <span className="menu-text">Rentals</span>
         </a>
       </div>
       <div className="menu-item">
+        <a onClick={handleProfile}>
+          <span>
+            <MdAccountCircle className="icon" />
+          </span>
+          <span className="menu-text">Profile</span>
+        </a>
+      </div>
+      <div className="menu-item">
         <a onClick={handleLogOut}>
           <span>
-            <CiLogout className="icon" />
+            <MdLogout className="icon" />
           </span>
           <span className="menu-text">Logout</span>
         </a>

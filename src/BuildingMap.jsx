@@ -30,7 +30,7 @@ const BuildingMap = () => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "AIzaSyCcnTZtoi3rJFmg07rgC28QM5cdyKV8hTo",
+      apiKey: "AIzaSyA8Xe4zjl1vMpWtm3JCIE_G7Mz7zhHSD2Y",
       version: "weekly",
       libraries: ["places"],
     });

@@ -39,13 +39,53 @@ code {
   transition: width 0.3s ease;
   overflow: hidden;
   padding-top: 20px; /* Space for the divider */
-  border-top-right-radius: 20px;
-  border-bottom-right-radius: 20px;
 }
 
 .side-menu:hover {
   width: 250px; /* Expanded width */
 }
+
+@media (max-width: 430px) { /* Mobile */
+  .side-menu {
+    width: 100%; /* Expand to full width of the screen */
+    height: 80px;
+    background-color: white;
+    position: fixed; /* Position it relative to the screen */
+    bottom: 0; /* Place it at the bottom of the screen */
+    left: 0; /* Ensure it stretches across the whole screen */
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around; /* Spread the menu items across the width */
+    align-items: center; /* Vertically center the items */
+    transition: width 0.3s ease;
+    overflow: hidden;
+    padding: 0; /* Remove the top padding */
+    z-index: 1000; /* Ensure it stays above other content */
+  }
+
+  .side-menu:hover {
+    width: 100%; /* Expanded width */
+  }
+
+  .map-back {
+    position: relative;
+    width: 100%;
+    /* height: calc(100% - 80px);  */
+    overflow: hidden; /* Ensures content doesn't spill out */
+    bottom: 80px; 
+  }
+
+  .container {
+    height: 100%; /* Ensure the container fills the remaining space */
+  }
+
+  /* Ensure the map content doesn't overlap with the nav bar */
+  .map-back,
+  .container {
+    bottom: 80px;
+  }
+}
+
 
 .content-container {
   /* Allows the content to take up the remaining space next to the SideMenu */
