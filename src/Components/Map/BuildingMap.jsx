@@ -14,7 +14,6 @@ const customLocations = [
   { name: "Skateboard Rental Station", lat: -26.19, lng: 28.026 },
   { name: "Bicycle Rental Station", lat: -26.191, lng: 28.029 },
   { name: "Skateboard Rental Station", lat: -26.189, lng: 28.03 },
-
   { name: "Bus Station", lat: -26.1907, lng: 28.0282 },
 ];
 
@@ -40,40 +39,58 @@ const BuildingMap = () => {
   });
   const mapInstanceRef = useRef(null);
 
+  const filterWheelchairAccessibleSteps = (steps) => {
+    // Filter out steps that mention stairs or other non-wheelchair-accessible instructions
+    return steps.filter((step) => {
+      const instruction = step.instructions.toLowerCase();
+      return !instruction.includes("stairs") && !instruction.includes("step");
+    });
+  };
+
   const calculateRoute = useCallback(
     (origin, destination) => {
-      directionsServiceRef.current.route(
-        {
-          origin: origin,
-          destination: destination,
-          travelMode: googleMaps.maps.TravelMode[selectedMode],
-        },
-        (response, status) => {
-          if (status === "OK") {
-            directionsRendererRef.current.setDirections(response);
-            const routeDetails = response.routes[0].legs[0];
-            setDirections(routeDetails);
-            localStorage.setItem("directions", JSON.stringify(routeDetails));
-            if (originMarkerRef.current) {
-              originMarkerRef.current.setPosition(routeDetails.start_location);
-            }
-            if (destinationMarkerRef.current) {
-              destinationMarkerRef.current.setPosition(
-                routeDetails.end_location
-              );
-            }
-            localStorage.setItem(
-              "route",
-              JSON.stringify({
-                origin: routeDetails.start_location.toJSON(),
-                destination: routeDetails.end_location.toJSON(),
-              })
+      const travelMode =
+        selectedMode === "WHEELCHAIR" ? "WALKING" : selectedMode;
+      const request = {
+        origin: origin,
+        destination: destination,
+        travelMode: googleMaps.maps.TravelMode[travelMode],
+      };
+
+      directionsServiceRef.current.route(request, (response, status) => {
+        if (status === "OK") {
+          if (selectedMode === "WHEELCHAIR") {
+            // Filter the steps to simulate wheelchair accessibility
+            response.routes[0].legs[0].steps = filterWheelchairAccessibleSteps(
+              response.routes[0].legs[0].steps
             );
-          } else {
-            console.log("Directions request failed due to " + status);
+          }
+          directionsRendererRef.current.setDirections(response);
+          const routeDetails = response.routes[0].legs[0];
+          setDirections(routeDetails);
+          localStorage.setItem("directions", JSON.stringify(routeDetails));
+          if (originMarkerRef.current) {
+            originMarkerRef.current.setPosition(routeDetails.start_location);
+          }
+          if (destinationMarkerRef.current) {
+            destinationMarkerRef.current.setPosition(routeDetails.end_location);
+          }
+          localStorage.setItem(
+            "route",
+            JSON.stringify({
+              origin: routeDetails.start_location.toJSON(),
+              destination: routeDetails.end_location.toJSON(),
+            })
+          );
+        } else {
+          console.log("Directions request failed due to " + status);
+          if (status === "ZERO_RESULTS") {
+            alert(
+              "No route could be found between the origin and destination."
+            );
           }
         }
-      );
+      });
     },
     [googleMaps, selectedMode]
   );
@@ -214,7 +231,7 @@ const BuildingMap = () => {
 
   useEffect(() => {
     const loader = new Loader({
-      apiKey: "API KEY HERE",
+      apiKey: "AIzaSyA8Xe4zjl1vMpWtm3JCIE_G7Mz7zhHSD2Y",
       version: "weekly",
       libraries: ["places"],
     });
@@ -368,7 +385,7 @@ const BuildingMap = () => {
               value={selectedMode}
               onChange={(e) => {
                 setSelectedMode(e.target.value);
-                if (directions && originMarker && destinationMarker) {
+                if (originMarker && destinationMarker) {
                   calculateRoute(
                     originMarker.getPosition(),
                     destinationMarker.getPosition()
@@ -381,8 +398,17 @@ const BuildingMap = () => {
               <option value="DRIVING">Driving</option>
               <option value="BICYCLING">Bicycling</option>
               <option value="TRANSIT">Transit</option>
+              <option value="WHEELCHAIR">Wheelchair Accessible</option>
             </select>
           </div>
+
+          {selectedMode === "WHEELCHAIR" && (
+            <div style={{ marginBottom: "10px", color: "red" }}>
+              <strong>Disclaimer:</strong> These directions attempt to provide
+              wheelchair-accessible routes but may not account for all
+              obstacles.
+            </div>
+          )}
 
           <button
             onClick={toggleMapStyle}
@@ -421,7 +447,9 @@ const BuildingMap = () => {
             {directions.steps.map((step, index) => (
               <li
                 key={index}
-                dangerouslySetInnerHTML={{ __html: step.instructions }}
+                dangerouslySetInnerHTML={{
+                  __html: step.instructions.replace(/walk/gi, "proceed"),
+                }}
                 style={{ marginBottom: "10px" }}
               ></li>
             ))}
